@@ -1,0 +1,28 @@
+version: '2'
+
+services:  
+  app:
+    container_name: app
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    restart: always
+    ports: 
+      - "8081:8080"
+    depends_on:
+      - demodb
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.1:5434/demo
+      - SPRING_DATASOURCE_USERNAME=einstein
+      - SPRING_DATASOURCE_PASSWORD=einstein
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+  demodb:
+    image: 'postgres:13.1-alpine'
+    ports:
+      - "5434:5432"
+    # restart: always
+    container_name: demodb
+    environment:
+      POSTGRES_DB: demo
+      POSTGRES_USER: einstein
+      POSTGRES_PASSWORD: einstein
