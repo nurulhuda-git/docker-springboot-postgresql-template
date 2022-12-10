@@ -12,10 +12,12 @@ services:
     depends_on:
       - demodb
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://172.17.0.1:5434/demo
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://demodb:5432/demo
       - SPRING_DATASOURCE_USERNAME=einstein
       - SPRING_DATASOURCE_PASSWORD=einstein
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - my-net
   demodb:
     image: 'postgres:13.1-alpine'
     ports:
@@ -26,3 +28,8 @@ services:
       POSTGRES_DB: demo
       POSTGRES_USER: einstein
       POSTGRES_PASSWORD: einstein
+    networks:
+      - my-net
+networks:
+  my-net:
+    driver: bridge
